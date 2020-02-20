@@ -150,6 +150,7 @@ services:
 #      - "${REDIS_HOST_PORT}:6379"
 #    volumes:
 #      - ${REDIS_CONF_FILE}:/etc/redis.conf:ro
+#      - ${DATA_DIR}/redis:/data/:rw
 #    restart: always
 #    entrypoint: ["redis-server", "/etc/redis.conf"]
 #    environment:
@@ -217,7 +218,7 @@ services:
 #        TZ: "$TZ"
 #    volumes:
 #      - ${DATA_DIR}/mongo:/data/db:rw
-#      - ${MONGODB_DATA_DIR}/mongo_key:/mongo:rw
+#      - ${DATA_DIR}/mongo_key:/mongo:rw
 #    ports:
 #       - "${MONGODB_HOST_PORT}:27017"
 #    networks:
