@@ -1,0 +1,9 @@
+Django==3.0.4
+djangorestframework==3.11.0
+pyDes==2.0.1
+PyMySQL==0.9.3
+redis==3.4.1
+requests==2.23.0
+pyodbc==4.0.30
+paramiko==2.7.1
+psutil==5.7.0

@@ -12,7 +12,7 @@ services:
       - "${NGINX_HTTP_HOST_PORT}:80"
       - "${NGINX_HTTPS_HOST_PORT}:443"
     volumes:
-      - ${SOURCE_DIR}:/www/:rw
+      - ${SOURCE_DIR}/nginx:/www/:rw
       - ${NGINX_SSL_CERTIFICATE_DIR}:/ssl:rw
       - ${NGINX_CONFD_DIR}:/etc/nginx/conf.d/:rw
       - ${NGINX_CONF_FILE}:/etc/nginx/nginx.conf:ro
@@ -37,7 +37,7 @@ services:
     expose:
       - 9501
     volumes:
-      - ${SOURCE_DIR}:/www/:rw
+      - ${SOURCE_DIR}/nginx:/www/:rw
       - ${PHP_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
       - ${PHP_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
       - ${PHP_LOG_DIR}:/var/log/php
@@ -60,7 +60,7 @@ services:
 #    expose:
 #      - 9501
 #    volumes:
-#      - ${SOURCE_DIR}:/www/:rw
+#      - ${SOURCE_DIR}/nginx:/www/:rw
 #      - ${PHP56_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
 #      - ${PHP56_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
 #      - ${PHP56_LOG_DIR}:/var/log/php
@@ -81,7 +81,7 @@ services:
 #        TZ: "$TZ"
 #    container_name: php54
 #    volumes:
-#      - ${SOURCE_DIR}:/www/:rw
+#      - ${SOURCE_DIR}/nginx:/www/:rw
 #      - ${PHP54_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
 #      - ${PHP54_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
 #      - ${PHP54_LOG_DIR}:/var/log/php
@@ -129,7 +129,7 @@ services:
 #       - "${OPENRESTY_HTTP_HOST_PORT}:80"
 #       - "${OPENRESTY_HTTPS_HOST_PORT}:443"
 #    volumes:
-#       - ${SOURCE_DIR}:/www/:rw
+#       - ${SOURCE_DIR}/nginx:/www/:rw
 #       - ${OPENRESTY_CONFD_DIR}:/etc/nginx/conf.d/:ro
 #       - ${OPENRESTY_SSL_CERTIFICATE_DIR}:/ssl:rw
 #       - ${OPENRESTY_CONF_FILE}:/usr/local/openresty/nginx/conf/nginx.conf:ro
@@ -291,13 +291,40 @@ services:
     container_name: tomcat
     hostname: tomcat
     volumes:
-      - ${TOMCAT_WEBAPPS_DIR}:/usr/local/tomcat/webapps:rw
+      - ${SOURCE_DIR}/tomcat:/usr/local/tomcat/webapps:rw
     expose:
       - "8080"
     ports:
       - "${TOMCAT_PORT}:8080"
     environment:
       TZ: "$TZ"
+    restart: always
+    networks:
+      - default
+
+  python:
+    build:
+      context: ./services/python
+      args:
+        PYTHON_VERSION: ${PYTHON_VERSION}
+    command: python3 /code/HelloWorld/manage.py runserver 0.0.0.0:8000
+#    command:
+#      - /bin/sh
+#      - -c
+#      - |
+#        django-admin startproject HelloWorld
+#        python3 /code/HelloWorld/manage.py runserver 0.0.0.0:8000
+    container_name: python
+    hostname: python
+    volumes:
+      - ${SOURCE_DIR}/python:/code:rw
+    expose:
+      - "8000"
+    ports:
+      - "${PYTHON_PORT}:8000"
+    environment:
+      TZ: "$TZ"
+    privileged: true
     restart: always
     networks:
       - default
