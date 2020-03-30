@@ -22,6 +22,8 @@ services:
     environment:
       TZ: "$TZ"
     restart: always
+    extra_hosts:
+      - "php-cli:10.0.0.11"
     networks:
       net-default:
         ipv4_address: 10.0.0.10
@@ -37,6 +39,7 @@ services:
     container_name: php
     expose:
       - 9501
+      - 8095
     volumes:
       - ${SOURCE_DIR}/nginx:/www/:rw
       - ${PHP_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
@@ -47,9 +50,10 @@ services:
     cap_add:
       - SYS_PTRACE
     extra_hosts:
-      - "host-cli:10.0.0.10"
+      - "nginx-cli:10.0.0.10"
     networks:
-      - net-default
+      net-default:
+        ipv4_address: 10.0.0.11
 
 #  php56:
 #    build:
