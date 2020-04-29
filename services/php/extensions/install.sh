@@ -597,6 +597,33 @@ if [[ -z "${EXTENSIONS##*,xlswriter,*}" ]]; then
     fi
 fi
 
+if [[ -z "${EXTENSIONS##*,rdkafka,*}" ]]; then
+    echo "---------- Install rdkafka ----------"
+    isPhpVersionGreaterOrEqual 5 6
+
+    if [[ "$?" = "1" ]]; then
+        apk add librdkafka-dev
+        printf "\n" | pecl install rdkafka
+        docker-php-ext-enable rdkafka
+    else
+        echo "---------- PHP Version>= 5.6----------"
+    fi
+fi
+
+if [[ -z "${EXTENSIONS##*,zookeeper,*}" ]]; then
+    echo "---------- Install zookeeper ----------"
+    isPhpVersionGreaterOrEqual 7 0
+
+    if [[ "$?" = "1" ]]; then
+        apk add re2c
+        apk add libzookeeper-dev --repository http://${CONTAINER_PACKAGE_URL}/alpine/edge/testing/
+        printf "\n" | pecl install zookeeper
+        docker-php-ext-enable zookeeper
+    else
+        echo "---------- PHP Version>= 7.0----------"
+    fi
+fi
+
 if [ "${PHP_EXTENSIONS}" != "" ]; then
     apk del .build-deps \
     && docker-php-source delete
