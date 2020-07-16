@@ -2,3 +2,5 @@
 .DS_Store
 nohup.out
 logs/*
+.env
+.docker-compose.yml
