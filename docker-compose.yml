@@ -103,6 +103,20 @@ services:
 #    networks:
 #      - net-default
 
+  postgres:
+    image: postgres:${PGSQL_VERSION}
+    container_name: postgres
+    ports:
+      - "${PGSQL_HOST_PORT}:5432"
+    volumes:
+      - ${DATA_DIR}/postgres:/var/lib/postgresql/data/:rw
+    restart: always
+    networks:
+      - net-default
+    environment:
+      POSTGRES_PASSWORD: "${PGSQL_ROOT_PASSWORD}"
+      TZ: "$TZ"
+
   mysql:
     image: mysql:${MYSQL_VERSION}
     container_name: mysql
