@@ -1,4 +1,4 @@
-> ⭐ BNDong: 在官方基础上增加了 Tomcat、Python，微调了目录结构。
+> ⭐　BNDong: 在官方基础上增加了 Tomcat、Python，微调了目录结构。
 
 DNMP（Docker + Nginx + MySQL + PHP7/5 + Redis）是一款全功能的**LNMP一键安装程序**。
 
