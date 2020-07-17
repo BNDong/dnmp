@@ -117,6 +117,20 @@ services:
       POSTGRES_PASSWORD: "${PGSQL_ROOT_PASSWORD}"
       TZ: "$TZ"
 
+#  postgis:
+#    image: mdillon/postgis:${POSTGIS_VERSION}
+#    container_name: postgis
+#    ports:
+#      - "${POSTGIS_HOST_PORT}:5432"
+#    volumes:
+#      - ${DATA_DIR}/postgis:/var/lib/postgresql/data/:rw
+#    restart: always
+#    networks:
+#      - net-default
+#    environment:
+#      POSTGRES_PASSWORD: "${POSTGIS_ROOT_PASSWORD}"
+#      TZ: "$TZ"
+
   mysql:
     image: mysql:${MYSQL_VERSION}
     container_name: mysql
