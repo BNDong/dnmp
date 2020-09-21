@@ -51,6 +51,8 @@ services:
       - SYS_PTRACE
     extra_hosts:
       - "nginx-cli:10.0.0.10"
+      - "loc.mapapi.net:10.0.0.10"
+      - "loc.lakcloud.net:10.0.0.10"
     networks:
       net-default:
         ipv4_address: 10.0.0.11

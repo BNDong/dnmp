@@ -12,6 +12,7 @@ php () {
     tty -s && tty=--tty
     docker run \
         $tty \
+        --network dnmp_net-default \
         --interactive \
         --rm \
         --volume $PWD:/www:rw \
@@ -25,6 +26,7 @@ php56 () {
     tty -s && tty=--tty
     docker run \
         $tty \
+        --network dnmp_net-default \
         --interactive \
         --rm \
         --volume $PWD:/www:rw \
@@ -38,6 +40,7 @@ php54 () {
     tty -s && tty=--tty
     docker run \
         $tty \
+        --network dnmp_net-default \
         --interactive \
         --rm \
         --volume $PWD:/www:rw \
@@ -51,6 +54,7 @@ composer () {
     tty -s && tty=--tty
     docker run \
         $tty \
+        --network dnmp_net-default \
         --interactive \
         --rm \
         --user www-data:www-data \
@@ -66,6 +70,7 @@ composer56 () {
     tty -s && tty=--tty
     docker run \
         $tty \
+        --network dnmp_net-default \
         --interactive \
         --rm \
         --user www-data:www-data \
@@ -81,6 +86,7 @@ composer54 () {
     tty -s && tty=--tty
     docker run \
         $tty \
+        --network dnmp_net-default \
         --interactive \
         --rm \
         --user www-data:www-data \
@@ -96,6 +102,7 @@ python () {
     tty -s && tty=--tty
     docker run \
         $tty \
+        --network dnmp_net-default \
         --interactive \
         --rm \
         --volume $PWD:/code:rw \
