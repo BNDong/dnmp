@@ -121,7 +121,9 @@ fi
 
 if [[ -z "${EXTENSIONS##*,gettext,*}" ]]; then
     echo "---------- Install gettext ----------"
-	docker-php-ext-install ${MC} gettext
+    apk --no-cache add gettext-dev
+    docker-php-ext-install ${MC} gettext
+
 fi
 
 if [[ -z "${EXTENSIONS##*,shmop,*}" ]]; then
@@ -223,6 +225,13 @@ if [[ -z "${EXTENSIONS##*,gd,*}" ]]; then
         freetype-dev \
         libpng-dev \
         libjpeg-turbo-dev
+fi
+
+if [[ -z "${EXTENSIONS##*,yaml,*}" ]]; then
+    echo "---------- Install yaml ----------"
+    apk add --no-cache yaml-dev
+    printf "\n" | pecl install yaml
+    docker-php-ext-enable yaml
 fi
 
 if [[ -z "${EXTENSIONS##*,intl,*}" ]]; then
@@ -361,6 +370,29 @@ if [[ -z "${EXTENSIONS##*,igbinary,*}" ]]; then
 fi
 
 
+if [[ -z "${EXTENSIONS##*,ssh2,*}" ]]; then
+    isPhpVersionGreaterOrEqual 7 0
+    if [[ "$?" = "1" ]]; then
+        echo "---------- Install ssh2 ----------"
+        printf "\n" | apk add libssh2-dev
+        pecl install ssh2-1.1.2
+        docker-php-ext-enable ssh2
+    else
+        echo "ssh2 requires PHP >= 7.0.0, installed version is ${PHP_VERSION}"
+    fi
+fi
+
+if [[ -z "${EXTENSIONS##*,protobuf,*}" ]]; then
+    isPhpVersionGreaterOrEqual 7 0
+    if [[ "$?" = "1" ]]; then
+        echo "---------- Install protobuf ----------"
+        printf "\n" | pecl install protobuf
+        docker-php-ext-enable protobuf
+    else
+        echo "yar requires PHP >= 7.0.0, installed version is ${PHP_VERSION}"
+    fi
+fi
+
 if [[ -z "${EXTENSIONS##*,yac,*}" ]]; then
     isPhpVersionGreaterOrEqual 7 0
     if [[ "$?" = "1" ]]; then
@@ -383,6 +415,7 @@ if [[ -z "${EXTENSIONS##*,yar,*}" ]]; then
     fi
 
 fi
+
 
 
 if [[ -z "${EXTENSIONS##*,yaconf,*}" ]]; then
@@ -436,9 +469,12 @@ if [[ -z "${EXTENSIONS##*,sqlsrv,*}" ]]; then
 fi
 
 if [[ -z "${EXTENSIONS##*,mcrypt,*}" ]]; then
-    isPhpVersionGreaterOrEqual 7 2
+    isPhpVersionGreaterOrEqual 7 0
     if [[ "$?" = "1" ]]; then
-        echo "---------- mcrypt was REMOVED from PHP 7.2.0 ----------"
+        echo "---------- Install mcrypt ----------"
+        apk add --no-cache libmcrypt-dev libmcrypt re2c
+        printf "\n" |pecl install mcrypt
+        docker-php-ext-enable mcrypt
     else
         echo "---------- Install mcrypt ----------"
         apk add --no-cache libmcrypt-dev \
@@ -651,6 +687,27 @@ if [[ -z "${EXTENSIONS##*,phalcon,*}" ]]; then
         printf "\n" | pecl install phalcon
         docker-php-ext-enable psr
         docker-php-ext-enable phalcon
+    else
+        echo "---------- PHP Version>= 7.2----------"
+    fi
+fi
+
+if [[ -z "${EXTENSIONS##*,sdebug,*}" ]]; then
+    echo "---------- Install sdebug ----------"
+    isPhpVersionGreaterOrEqual 7 2
+
+    if [[ "$?" = "1" ]]; then
+                curl -SL "https://github.com/swoole/sdebug/archive/sdebug_2_9-beta.tar.gz" -o sdebug.tar.gz \
+             && mkdir -p sdebug \
+             && tar -xf sdebug.tar.gz -C sdebug --strip-components=1 \
+             && rm sdebug.tar.gz \
+             && ( \
+                 cd sdebug \
+                 && phpize \
+                 && ./configure  --enable-xdebug \
+                 && make clean && make && make install \
+             ) \
+             && docker-php-ext-enable xdebug
     else
         echo "---------- PHP Version>= 7.2----------"
     fi
