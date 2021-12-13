@@ -51,11 +51,32 @@ services:
       - SYS_PTRACE
     extra_hosts:
       - "nginx-cli:10.0.0.10"
-      # - "loc.mapapi.net:10.0.0.10"
-      # - "loc.lakcloud.net:10.0.0.10"
     networks:
       net-default:
         ipv4_address: 10.0.0.11
+
+#    php80:
+#      build:
+#        context: ./services/php80
+#        args:
+#          PHP_VERSION: php:${PHP80_VERSION}-fpm-alpine3.13
+#          CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
+#          PHP_EXTENSIONS: ${PHP80_EXTENSIONS}
+#          TZ: "$TZ"
+#      container_name: php80
+#      expose:
+#        - 9501
+#      volumes:
+#        - ${SOURCE_DIR}/nginx:/www/:rw
+#        - ${PHP80_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
+#        - ${PHP80_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
+#        - ${PHP80_LOG_DIR}:/var/log/php
+#        - ${DATA_DIR}/composer:/tmp/composer
+#      restart: always
+#      cap_add:
+#        - SYS_PTRACE
+#      networks:
+#        - default
 
 #  php56:
 #    build:
@@ -208,7 +229,11 @@ services:
 #      - net-default
 
 #  rabbitmq:
-#    image: rabbitmq:${RABBITMQ_VERSION}
+#    build:
+#      context: ./services/rabbitmq
+#      args:
+#        RABBITMQ_VERSION: ${RABBITMQ_VERSION}
+#        RABBITMQ_PLUGINS: ${RABBITMQ_PLUGINS}
 #    container_name: rabbitmq
 #    restart: always
 #    ports:
