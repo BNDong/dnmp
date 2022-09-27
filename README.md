@@ -1,8 +1,14 @@
+<<<<<<< HEAD
 > ⭐　BNDong: 在官方基础上增加了 Tomcat、Python、postgres、postgis、golang，微调了目录结构。
 
-DNMP（Docker + Nginx + MySQL + PHP7/5 + Redis）是一款全功能的**LNMP一键安装程序**。
+DNMP（Docker + Nginx/Openresty + MySQL5,8 + PHP5,7,8 + Redis + ElasticSearch + MongoDB + RabbitMQ）是一款全功能的**LNMP一键安装程序，支持Arm CPU**。
 
-> 使用前最好提前阅读一遍[目录](#目录)，以便快速上手，遇到问题也能及时排除。交流QQ一群：**572041090（已满）**，二群：**300723526**。
+> 使用前最好提前阅读一遍[目录](#目录)，以便快速上手，遇到问题也能及时排除。
+
+QQ交流群：
+- 1群：**572041090**（已满）
+- 2群：**300723526**（已满）
+- 3群：**878913761**（有位）
 
 **[[ENGLISH]](README-en.md)** -
 [**[GitHub地址]**](https://github.com/yeszao/dnmp) -
@@ -11,14 +17,14 @@ DNMP（Docker + Nginx + MySQL + PHP7/5 + Redis）是一款全功能的**LNMP一�
 DNMP项目特点：
 1. `100%`开源
 2. `100%`遵循Docker标准
-3. 支持**多版本PHP**共存，可任意切换（PHP5.4、PHP5.6、PHP7.1、PHP7.2、PHP7.3、PHP8.0)
+3. 支持**多版本PHP**共存，可任意切换（PHP5.4、PHP5.6、PHP7.1、PHP7.2、PHP7.3、PHP7.4、PHP8.0)
 4. 支持绑定**任意多个域名**
 5. 支持**HTTPS和HTTP/2**
 6. **PHP源代码、MySQL数据、配置文件、日志文件**都可在Host中直接修改查看
 7. 内置**完整PHP扩展安装**命令
 8. 默认支持`pdo_mysql`、`mysqli`、`mbstring`、`gd`、`curl`、`opcache`等常用热门扩展，根据环境灵活配置
 9. 可一键选配常用服务：
-    - 多PHP版本：PHP5.4、PHP5.6、PHP7.1-7.3、PHP8.0
+    - 多PHP版本：PHP5.4、PHP5.6、PHP7.0-7.4、PHP8.0
     - Web服务：Nginx、Openresty
     - 数据库：MySQL5、MySQL8、Redis、memcached、MongoDB、ElasticSearch
     - 消息队列：RabbitMQ
@@ -27,6 +33,7 @@ DNMP项目特点：
 11. 所有镜像源于[Docker官方仓库](https://hub.docker.com)，安全可靠
 11. 一次配置，**Windows、Linux、MacOs**皆可用
 12. 支持快速安装扩展命令 `install-php-extensions apcu`
+13. 支持安装certbot获取免费https用的SSL证书
 
 # 目录
 - [1.目录结构](#1目录结构)
@@ -69,7 +76,7 @@ DNMP项目特点：
 │   ├── mysql                   MySQL8 配置文件目录
 │   ├── mysql5                  MySQL5 配置文件目录
 │   ├── nginx                   Nginx 配置文件目录
-│   ├── php                     PHP5.6 - PHP7.3 配置目录
+│   ├── php                     PHP5.6 - PHP7.4 配置目录
 │   ├── php54                   PHP5.4 配置目录
 │   └── redis                   Redis 配置目录
 ├── logs                        日志目录
@@ -86,8 +93,10 @@ DNMP项目特点：
 2. `clone`项目：
     ```
     $ git clone https://github.com/yeszao/dnmp.git
+    # 假如速度太慢，可以使用加速拉取镜像
+    $ git clone https://github.com.cnpmjs.org/yeszao/dnmp.git
     ```
-3. 如果不是`root`用户，还需将当前用户加入`docker`用户组：
+3. 如果主机是 Linux系统，且当前用户不是`root`用户，还需将当前用户加入`docker`用户组：
     ```
     $ sudo gpasswd -a ${USER} docker
     ```
@@ -163,14 +172,14 @@ install-php-extensions apcu
 | apcu_bc |  |  | &check; | &check; | &check; | &check; | &check; |  |  |
 | ast |  |  | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | bcmath | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
-| blackfire | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |  |
+| blackfire | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | bz2 | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | calendar | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | cmark |  |  | &check; | &check; | &check; | &check; | &check; |  |  |
 | csv |  |  |  |  |  | &check; | &check; | &check; | &check; |
 | dba | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | decimal |  |  | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
-| ds |  |  | &check; | &check; | &check; | &check; | &check; | &check; |  |
+| ds |  |  | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | enchant | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | ev | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | event | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
@@ -215,6 +224,7 @@ install-php-extensions apcu
 | odbc | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | opcache | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | opencensus |  |  | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
+| openswoole |  |  |  |  | &check; | &check; | &check; | &check; | &check; |
 | parallel[*](#special-requirements-for-parallel) |  |  |  | &check; | &check; | &check; | &check; |  |  |
 | pcntl | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | pcov |  |  | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
@@ -231,7 +241,7 @@ install-php-extensions apcu
 | pspell | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | pthreads[*](#special-requirements-for-pthreads) | &check; | &check; | &check; |  |  |  |  |  |  |
 | raphf | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
-| rdkafka | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |  |
+| rdkafka | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | recode | &check; | &check; | &check; | &check; | &check; | &check; |  |  |  |
 | redis | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | seaslog | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
@@ -243,16 +253,16 @@ install-php-extensions apcu
 | sockets | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | solr | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | sourceguardian | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |  |
-| spx |  | &check; | &check; | &check; | &check; | &check; | &check; | &check; |  |
+| spx |  | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | sqlsrv[*](#special-requirements-for-sqlsrv) |  |  | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | ssh2 | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | stomp | &check; | &check; | &check; | &check; | &check; | &check; | &check; |  |  |
-| swoole | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |  |
+| swoole | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | sybase_ct | &check; | &check; |  |  |  |  |  |  |  |
 | sysvmsg | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | sysvsem | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | sysvshm | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
-| tensor |  |  |  |  | &check; | &check; | &check; | &check; |  |
+| tensor[*](#special-requirements-for-tensor) |  |  |  |  | &check; | &check; | &check; | &check; |  |
 | tidy | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | timezonedb | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | uopz | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
@@ -264,17 +274,17 @@ install-php-extensions apcu
 | xhprof | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | xlswriter |  |  | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | xmldiff | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
-| xmlrpc | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |  |
+| xmlrpc | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | xsl | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | yac |  |  | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
-| yaml | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |  |
+| yaml | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | yar | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | zephir_parser |  |  | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | zip | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | zookeeper | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 | zstd | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; | &check; |
 
-*Number of supported extensions: 115*
+*Number of supported extensions: 116*
 
 此扩展来自[https://github.com/mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer)
 参考示例文件
@@ -316,7 +326,7 @@ install-php-extensions apcu
         "repositories": {
             "packagist": {
                 "type": "composer",
-                "url": "https://packagist.laravel-china.org"
+                "url": "https://mirrors.aliyun.com/composer/"
             }
         }
     }
@@ -420,10 +430,10 @@ ini_set('display_errors', 'on');
 3. 重启PHP-FPM容器。
 
 ### 5.3 MySQL日志
-因为MySQL容器中的MySQL使用的是`mysql`用户启动，它无法自行在`/var/log`下的增加日志文件。所以，我们把MySQL的日志放在与data一样的目录，即项目的`mysql`目录下，对应容器中的`/var/lib/mysql/`目录。
+因为MySQL容器中的MySQL使用的是`mysql`用户启动，它无法自行在`/var/log`下的增加日志文件。所以，我们把MySQL的日志放在与data一样的目录，即项目的`mysql`目录下，对应容器中的`/var/log/mysql/`目录。
 ```bash
-slow-query-log-file     = /var/lib/mysql/mysql.slow.log
-log-error               = /var/lib/mysql/mysql.error.log
+slow-query-log-file     = /var/log/mysql/mysql.slow.log
+log-error               = /var/log/mysql/mysql.error.log
 ```
 以上是mysql.conf中的日志文件的配置。
 
@@ -513,6 +523,9 @@ docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
 ```
 
 3.接着直接php容器使用`172.0.17.1:3306`连接即可
+
+### 8.6 SQLSTATE[HY000] [1130] Host '172.19.0.2' is not allowed to connect to this MySQL server
+1. 目前使用mysql-server `8.0.28`以上的版本,php版本需要`7.4.7`以上才能连接
 ## License
 MIT
 
