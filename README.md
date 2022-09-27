@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 > ⭐　BNDong: 在官方基础上增加了 Tomcat、Python、postgres、postgis、golang，微调了目录结构。
 
 DNMP（Docker + Nginx/Openresty + MySQL5,8 + PHP5,7,8 + Redis + ElasticSearch + MongoDB + RabbitMQ）是一款全功能的**LNMP一键安装程序，支持Arm CPU**。
