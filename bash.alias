@@ -96,7 +96,7 @@ composer54 () {
         dnmp_php54 composer "$@"
 }
 
-# python3.8 cli
+# python cli
 python () {
     tty=
     tty -s && tty=--tty
@@ -108,4 +108,20 @@ python () {
         --volume $PWD:/code:rw \
         --workdir /code \
         dnmp_python python "$@"
+}
+
+# golang cli
+go () {
+    tty=
+    tty -s && tty=--tty
+    docker run \
+        $tty \
+        --network dnmp_net-default \
+        --interactive \
+        --rm \
+        --volume $PWD:/app:rw \
+        --workdir /app \
+        --env GOOS=darwin \
+        --env GOARCH=amd64 \
+        dnmp_golang go "$@"
 }
