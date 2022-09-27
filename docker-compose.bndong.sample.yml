@@ -445,15 +445,19 @@ services:
       context: ./services/golang
       args:
         GOLANG_VERSION: ${GOLANG_VERSION}
-    command: go run main.go
+    command: go run mainTest.go
     container_name: golang
     hostname: golang
     volumes:
       - ${SOURCE_DIR}/golang:/app:rw
     ports:
-      - "${GOLANG_PORT}:80"
+      - "${GOLANG_PORT}:9110"
     environment:
-      TZ: "$TZ"
+      - GO111MODULE=auto
+      - GOPATH=/app
+      - GOBIN=/app/bin
+      - GOPROXY=https://goproxy.cn,direct
+      - TZ=$TZ
     privileged: true
     restart: always
     networks:
