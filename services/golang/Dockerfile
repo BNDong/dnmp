@@ -4,3 +4,9 @@ FROM golang:${GOLANG_VERSION}
 RUN rm -rf /app
 RUN mkdir /app
 WORKDIR /app
+
+ENV GOPATH=/app
+ENV GOBIN=$GOPATH/bin
+ENV GO111MODULE=on
+ENV GOPROXY=https://goproxy.cn,direct
+ENV PATH=$PATH:$GOROOT/bin:$GOBIN

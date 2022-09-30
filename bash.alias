@@ -123,9 +123,5 @@ go () {
         --workdir /app \
         --env GOOS=darwin \
         --env GOARCH=amd64 \
-        --env GO111MODULE=auto \
-        --env GOPATH=/app \
-        --env GOBIN=/app/bin \
-        --env GOPROXY=https://goproxy.cn,direct \
         dnmp_golang go "$@"
 }
