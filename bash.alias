@@ -121,7 +121,7 @@ go () {
         --rm \
         --volume $PWD:/app:rw \
         --workdir /app \
-        --env GOOS=darwin \
+        --env GOOS=linux \
         --env GOARCH=amd64 \
         dnmp_golang go "$@"
 }
