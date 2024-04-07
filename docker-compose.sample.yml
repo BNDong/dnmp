@@ -34,6 +34,7 @@ services:
       args:
         PHP_VERSION: php:${PHP_VERSION}-fpm-alpine
         CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
+        COMPOSER_URL: ${COMPOSER_URL}
         PHP_EXTENSIONS: ${PHP_EXTENSIONS}
         TZ: "$TZ"
     container_name: php
@@ -57,8 +58,9 @@ services:
 #    build:
 #      context: ./services/php80
 #      args:
-#        PHP_VERSION: php:${PHP80_VERSION}-fpm-alpine3.13
+#        PHP_VERSION: php:${PHP80_VERSION}-fpm-alpine
 #        CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
+#        COMPOSER_URL: ${COMPOSER_URL}
 #        PHP_EXTENSIONS: ${PHP80_EXTENSIONS}
 #        TZ: "$TZ"
 #    container_name: php80
@@ -78,7 +80,7 @@ services:
 
 #  php56:
 #    build:
-#      context: ./services/php
+#      context: ./services/php56
 #      args:
 #        PHP_VERSION: php:${PHP56_VERSION}-fpm-alpine
 #        CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
@@ -121,7 +123,7 @@ services:
 #      - default
 
   mysql:
-    image: mysql/mysql-server:${MYSQL_VERSION}
+    image: mysql:${MYSQL_VERSION}
     container_name: mysql
     ports:
       - "${MYSQL_HOST_PORT}:3306"
@@ -139,7 +141,7 @@ services:
       TZ: "$TZ"
 
   mysql5:
-    image: mysql/mysql-server:${MYSQL5_VERSION}
+    image: mysql:${MYSQL5_VERSION}
     container_name: mysql5
     ports:
       - "${MYSQL5_HOST_PORT}:3306"
@@ -287,6 +289,8 @@ services:
 #    volumes:
 #      - ${DATA_DIR}/esdata:/usr/share/elasticsearch/data
 #      - ${ELASTICSEARCH_CONF_FILE}:/usr/share/elasticsearch/config/elasticsearch.yml
+#      - ${ELASTICSEARCH_JVM_CONF_FILE}:/usr/share/elasticsearch/config/jvm.options
+#      - ${ELASTICSEARCH_LOG4J2_CONF_FILE}:/usr/share/elasticsearch/config/log4j2.properties
 #    hostname: elasticsearch
 #    restart: always
 #    ports:
