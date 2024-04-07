@@ -63,7 +63,7 @@ services:
     build:
       context: ./services/php80
       args:
-        PHP_VERSION: php:${PHP80_VERSION}-fpm-alpine3.13
+        PHP_VERSION: php:${PHP80_VERSION}-fpm-alpine
         CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
         COMPOSER_URL: ${COMPOSER_URL}
         PHP_EXTENSIONS: ${PHP80_EXTENSIONS}
@@ -90,7 +90,7 @@ services:
     build:
       context: ./services/php81
       args:
-        PHP_VERSION: php:${PHP81_VERSION}-fpm-alpine3.16
+        PHP_VERSION: php:${PHP81_VERSION}-fpm-alpine
         CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
         OMPOSER_URL: ${COMPOSER_URL}
         PHP_EXTENSIONS: ${PHP81_EXTENSIONS}
@@ -324,6 +324,7 @@ services:
     volumes:
       - ${DATA_DIR}/mongo:/data/db:rw
       - ${DATA_DIR}/mongo_key:/mongo:rw
+    restart: always
     ports:
        - "${MONGODB_HOST_PORT}:27017"
     networks:

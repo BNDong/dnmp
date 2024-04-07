@@ -15,7 +15,7 @@ collation-server        = utf8mb4_unicode_ci
 init_connect            = 'SET NAMES utf8mb4'
 max_allowed_packet      = 500M
 wait_timeout            = 288000
-interactive_timeout     = 288000sp
+interactive_timeout     = 288000
 
 disable-log-bin
 skip-character-set-client-handshake
