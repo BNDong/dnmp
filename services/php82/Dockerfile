@@ -19,7 +19,7 @@ RUN export option="--no-install-recommends -y" \
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
-RUN curl -sSLf -o /usr/local/bin/install-php-extensions https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions \
+RUN curl -sSLf -o /usr/local/bin/install-php-extensions https://gh-proxy.com/https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions \
 && chmod +x /usr/local/bin/install-php-extensions \
 && install-php-extensions $PHP_EXTENSIONS
 
