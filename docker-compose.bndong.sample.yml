@@ -32,6 +32,7 @@ services:
     build:
       context: ./services/php82
       args:
+        PHP_VERSION: php:${PHP82_VERSION}-fpm-alpine
         DEBIAN_MIRROR_DOMAIN: deb.debian.org
         PHP_EXTENSIONS: "$PHP82_EXTENSIONS"
         TZ: "$TZ"
