@@ -3,20 +3,23 @@ FROM ${PHP_VERSION}
 
 ARG TZ
 ARG PHP_EXTENSIONS
+ARG CONTAINER_PACKAGE_URL
 ARG DEBIAN_MIRROR_DOMAIN
+
+RUN if [ "${CONTAINER_PACKAGE_URL}" != "" ] ; then sed -i "s/dl-cdn.alpinelinux.org/${CONTAINER_PACKAGE_URL}/g" /etc/apk/repositories ; fi
 
 ENV TZ=${TZ}
 
 # Set debian mirror
-RUN sed -i "s|deb.debian.org|${DEBIAN_MIRROR_DOMAIN}|g" /etc/apt/sources.list.d/debian.sources
+# RUN sed -i "s|deb.debian.org|${DEBIAN_MIRROR_DOMAIN}|g" /etc/apt/sources.list.d/debian.sources
 
 # Install required packages
-RUN export option="--no-install-recommends -y" \
-    && apt-get $option update \
-    && apt-get $option install tzdata curl
+# RUN export option="--no-install-recommends -y" \
+#     && apt-get $option update \
+#     && apt-get $option install tzdata curl
 
 # Clean up the package list to reduce image size
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+# RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
 RUN curl -sSLf -o /usr/local/bin/install-php-extensions https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions \
