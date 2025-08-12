@@ -3,51 +3,38 @@ services:
   nginx:
     build:
       context: ./services/nginx
-      args:
-        NGINX_VERSION: nginx:${NGINX_VERSION}
-        CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
-        NGINX_INSTALL_APPS: ${NGINX_INSTALL_APPS}
     container_name: nginx
     ports:
-      - "${NGINX_HTTP_HOST_PORT}:80"
-      - "${NGINX_HTTPS_HOST_PORT}:443"
+      - "80:80"
+      - "443:443"
     volumes:
       - ${SOURCE_DIR}:/www/:rw
-      - ${NGINX_SSL_CERTIFICATE_DIR}:/ssl:rw
-      - ${NGINX_CONFD_DIR}:/etc/nginx/conf.d/:rw
-      - ${NGINX_CONF_FILE}:/etc/nginx/nginx.conf:ro
-      - ${NGINX_FASTCGI_PHP_CONF}:/etc/nginx/fastcgi-php.conf:ro
-      - ${NGINX_FASTCGI_PARAMS}:/etc/nginx/fastcgi_params:ro
-      - ${NGINX_LOG_DIR}:/var/log/nginx/:rw
-    environment:
-      TZ: "$TZ"
+      - ${NGINX_SSL_CERTIFICATE_DIR}:/ssl
+      - ${NGINX_CONFD_DIR}:/etc/nginx/conf.d
+      - ${NGINX_CONF_FILE}:/etc/nginx/nginx.conf
+      - ${NGINX_FASTCGI_PHP_CONF}:/etc/nginx/fastcgi-php.conf
+      - ${NGINX_FASTCGI_PARAMS}:/etc/nginx/fastcgi_params
+      - ${NGINX_LOG_DIR}:/var/log/nginx
     restart: always
     networks:
       - default
-      # 可以把-default 改成下列配置，以固定容器IP
-      #default:
-      #  ipv4_address: 10.0.0.10
 
-  php:
+  php82:
     build:
-      context: ./services/php
+      context: ./services/php82
       args:
-        PHP_VERSION: php:${PHP_VERSION}-fpm-alpine
-        CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
-        COMPOSER_URL: ${COMPOSER_URL}
-        PHP_EXTENSIONS: ${PHP_EXTENSIONS}
+        DEBIAN_MIRROR_DOMAIN: deb.debian.org
+        PHP_EXTENSIONS: "$PHP82_EXTENSIONS"
         TZ: "$TZ"
-    container_name: php
+    container_name: php82
     expose:
       - 9501
-    extra_hosts:
-      - "www.site1.com:172.17.0.1"
     volumes:
       - ${SOURCE_DIR}:/www/:rw
-      - ${PHP_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
-      - ${PHP_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
-      - ${PHP_LOG_DIR}:/var/log/php
-      - ${DATA_DIR}/composer:/tmp/composer
+      - ${PHP82_PHP_CONF_FILE}:/usr/local/etc/php/php.ini
+      - ${PHP82_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf
+      - ${PHP82_LOG_DIR}:/var/log/php
+      - ${PHP82_DATA_COMPOSER}:/tmp/composer
     restart: always
     cap_add:
       - SYS_PTRACE
@@ -76,6 +63,32 @@ services:
 #    cap_add:
 #      - SYS_PTRACE
 #    networks:
+#      - default
+
+#  php74:
+#     build:
+#       context: ./services/php74
+#       args:
+#         PHP_VERSION: php:${PHP74_VERSION}-fpm-alpine
+#         CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
+#         COMPOSER_URL: ${COMPOSER_URL}
+#         PHP_EXTENSIONS: ${PHP74_EXTENSIONS}
+#         TZ: "$TZ"
+#     container_name: php74
+#     expose:
+#       - 9501
+#     extra_hosts:
+#       - "www.site1.com:172.17.0.1"
+#     volumes:
+#       - ${SOURCE_DIR}:/www/:rw
+#       - ${PHP74_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
+#       - ${PHP74_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
+#       - ${PHP74_LOG_DIR}:/var/log/php
+#       - ${DATA_DIR}/composer:/tmp/composer
+#     restart: always
+#     cap_add:
+#       - SYS_PTRACE
+#     networks:
 #      - default
 
 #  php56:
@@ -141,15 +154,16 @@ services:
       TZ: "$TZ"
 
   mysql5:
+ #  platform: linux/amd64  # 指定使用 amd64 平台,mac芯片m1-m4需要打开
     image: mysql:${MYSQL5_VERSION}
-    container_name: mysql5
+    container_name: testmysql5
     ports:
       - "${MYSQL5_HOST_PORT}:3306"
     volumes:
       - ${MYSQL5_CONF_FILE}:/etc/mysql/conf.d/mysql.cnf:ro
       - ${DATA_DIR}/mysql5:/var/lib/mysql/:rw
       - ${MYSQL5_LOG_DIR}:/var/log/mysql/:rw
-    restart: always
+
     networks:
       - default
     environment:

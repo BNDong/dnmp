@@ -591,7 +591,7 @@ fi
 if [[ -z "${EXTENSIONS##*,mongodb,*}" ]]; then
     echo "---------- Install mongodb ----------"
     apk add --no-cache openssl-dev
-    installExtensionFromTgz mongodb-1.7.4
+    installExtensionFromTgz mongodb-1.20.1
     docker-php-ext-configure mongodb --with-mongodb-ssl=openssl 
 fi
 
