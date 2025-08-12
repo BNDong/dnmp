@@ -23,6 +23,11 @@ services:
       - "php-cli-81:10.0.0.13"
       - "php-cli-74:10.0.0.14"
       - "host.docker.internal:host-gateway"
+      - "www.vbank.loc:host-gateway"
+      - "www.risk.loc:host-gateway"
+      - "www.opsmonitor.loc:host-gateway"
+      - "www.invoice.loc:host-gateway"
+      - "www.servicesms.loc:host-gateway"
     networks:
       net-default:
         ipv4_address: 10.0.0.10
@@ -40,7 +45,7 @@ services:
     expose:
       - 9501
     volumes:
-      - ${SOURCE_DIR}/nginx:/www/:rw
+      - ${SOURCE_DIR}/nginx/nginx:/www/:rw
       - ${PHP82_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
       - ${PHP82_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
       - ${PHP82_LOG_DIR}:/var/log/php
@@ -51,6 +56,10 @@ services:
     extra_hosts:
       - "nginx-cli:10.0.0.10"
       - "host.docker.internal:host-gateway"
+      - "www.vbank.loc:host-gateway"
+      - "www.risk.loc:host-gateway"
+      - "www.opsmonitor.loc:host-gateway"
+      - "www.servicesms.loc:host-gateway"
     networks:
       net-default:
         ipv4_address: 10.0.0.11
@@ -79,6 +88,11 @@ services:
     extra_hosts:
       - "nginx-cli:10.0.0.10"
       - "host.docker.internal:host-gateway"
+      - "www.invoice.loc:host-gateway"
+      - "www.risk.loc:host-gateway"
+      - "www.vbank.loc:host-gateway"
+      - "www.servicesms.loc:host-gateway"
+      - "www.opsmonitor.loc:host-gateway"
     networks:
       net-default:
         ipv4_address: 10.0.0.12
@@ -124,7 +138,7 @@ services:
     expose:
       - 9501
     volumes:
-      - ${SOURCE_DIR}:/www/:rw
+      - ${SOURCE_DIR}/nginx:/www/:rw
       - ${PHP74_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
       - ${PHP74_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
       - ${PHP74_LOG_DIR}:/var/log/php
@@ -135,6 +149,10 @@ services:
     extra_hosts:
       - "nginx-cli:10.0.0.10"
       - "host.docker.internal:host-gateway"
+      - "www.vbank.loc:host-gateway"
+      - "www.risk.loc:host-gateway"
+      - "www.opsmonitor.loc:host-gateway"
+      - "www.servicesms.loc:host-gateway"
     networks:
       net-default:
         ipv4_address: 10.0.0.14
