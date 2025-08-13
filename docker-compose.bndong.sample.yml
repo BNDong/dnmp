@@ -40,7 +40,7 @@ services:
     expose:
       - 9501
     volumes:
-      - ${SOURCE_DIR}/nginx/nginx:/www/:rw
+      - ${SOURCE_DIR}/nginx:/www/:rw
       - ${PHP82_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
       - ${PHP82_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
       - ${PHP82_LOG_DIR}:/var/log/php
